@@ -10,3 +10,5 @@ media/work/
 submission/PRIVATE.md
 media/rcs/*.html
 *.log
+site/assets/
+.vercel

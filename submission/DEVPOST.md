@@ -1,5 +1,7 @@
 # Devpost submission: Settle
 
+**Project site:** https://settle-agent-khaki.vercel.app · **Repo:** https://github.com/icohangar-ops/settle-agent
+
 **Tagline:** Medical bills, explained and settled by an agent, in the chat app the patient already uses.
 
 ## Inspiration

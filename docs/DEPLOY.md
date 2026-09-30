@@ -86,3 +86,10 @@ aws lambda invoke --function-name <OutreachFunction> \
 ```bash
 cd infra && npx aws-cdk@2 destroy
 ```
+
+## Project site (Vercel)
+
+```bash
+./scripts/build_site.sh              # copies video, screenshots and diagram into site/assets (gitignored)
+cd site && vercel deploy --prod      # static; no AWS credentials involved
+```

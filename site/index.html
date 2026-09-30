@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settle · Agentic Patient Billing</title>
+<meta name="description" content="An agent on Amazon Bedrock AgentCore that explains medical bills, sets up practice-approved payment plans and escalates disputes to staff, over RCS, SMS, WhatsApp and email.">
+<meta property="og:title" content="Settle · Agentic Patient Billing">
+<meta property="og:description" content="Medical bills, explained and settled by an agent, over RCS, SMS, WhatsApp and email.">
+<meta property="og:image" content="assets/thumbnail_16x9.png">
+<link rel="icon" href="assets/logo.png">
+<style>
+:root{--bg:#0B1220;--panel:#111A2E;--line:#23304D;--ink:#E8EEF9;--mute:#94A3C0;--teal:#2DD4BF;--amber:#F5B84B;--red:#F87171;--green:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1100px 600px at 85% -10%,#16244A 0%,var(--bg) 55%) no-repeat,var(--bg);color:var(--ink);
+  font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px;color:var(--ink)}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--teal),#0EA5E9);display:grid;place-items:center;color:#04121A;font-weight:900}
+nav .links{display:flex;gap:22px;font-size:15px} nav .links a{color:var(--mute)}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:48px 0 64px}
+.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:14px}
+h1{font-size:clamp(38px,6vw,64px);line-height:1.03;letter-spacing:-.03em;font-weight:850}
+h1 span{color:var(--teal)}
+.lede{color:var(--mute);font-size:19px;margin:22px 0 28px;max-width:560px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chip{border:1.5px solid var(--teal);color:var(--teal);border-radius:999px;padding:4px 12px;font-weight:700;font-size:14px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 20px;border-radius:12px;font-weight:700;font-size:16px}
+.btn.primary{background:var(--teal);color:#04121A} .btn.ghost{border:1px solid var(--line);color:var(--ink);background:var(--panel)}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.phone{justify-self:center;width:min(330px,100%);border-radius:40px;border:10px solid #05070C;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 2px #2A3550}
+.phone img{display:block;width:100%}
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.sub{color:var(--mute);max-width:720px;margin-bottom:30px}
+video{width:100%;border-radius:18px;border:1px solid var(--line);background:#000;display:block}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.shots figure{text-align:center}
+.shots img{width:100%;border-radius:22px;border:6px solid #05070C;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.shots figcaption{color:var(--mute);font-size:14px;margin-top:10px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px}
+.card .k{font-size:12px;letter-spacing:.16em;color:var(--teal);font-weight:800}
+.card h3{font-size:22px;margin:8px 0 10px}
+.card p{color:var(--mute);font-size:16px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;font-size:15.5px}
+th,td{text-align:left;padding:13px 18px;border-top:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-top:none}
+td code,.mono{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:14px;color:var(--teal)}
+td .ok{color:var(--green);font-weight:800;margin-right:8px}
+.arch{width:100%;border-radius:18px;border:1px solid var(--line)}
+.aws{display:flex;flex-wrap:wrap;gap:10px}
+.aws span{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:15px}
+pre{background:#060B16;border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow-x:auto;font:14px/1.6 "SF Mono",Menlo,Consolas,monospace;color:#CFE3FF}
+.callout{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.35);border-radius:14px;padding:16px 20px;color:var(--ink);margin-top:22px}
+footer{padding:40px 0 60px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+@media (max-width:900px){.hero{grid-template-columns:1fr}.shots{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}nav .links{display:none}}
+@media (max-width:560px){th:nth-child(2),td:nth-child(2){display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><span class="logo">S</span>Settle</a>
+    <div class="links"><a href="#demo">Demo</a><a href="#live">Live phone</a><a href="#guardrails">Guardrails</a><a href="#architecture">Architecture</a><a href="https://github.com/icohangar-ops/settle-agent">GitHub</a></div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <div class="kicker">AWS CDS Agentic AI Hackathon</div>
+      <h1>Medical bills, <span>explained &amp; settled</span> by an agent.</h1>
+      <p class="lede">Settle has the billing conversation patients never get: why they owe what they owe, a payment plan they choose, and a human when it's needed. It runs over the messaging apps patients already use.</p>
+      <div class="chips"><span class="chip">RCS</span><span class="chip">SMS</span><span class="chip">WhatsApp</span><span class="chip">Email</span></div>
+      <div class="btns">
+        <a class="btn primary" href="#demo">Watch the 3-min demo</a>
+        <a class="btn ghost" href="https://github.com/icohangar-ops/settle-agent">View the code</a>
+      </div>
+    </div>
+    <div class="phone"><img src="assets/rcs-4-enrolled.jpg" alt="Live RCS conversation: the patient is enrolled in 4 payments of $70.90 with a secure payment link"></div>
+  </header>
+
+  <section id="demo">
+    <h2>Demo</h2>
+    <p class="sub">Every chat bubble and tool call on screen comes from real runs against the deployed Amazon Bedrock AgentCore runtime. All patient data is synthetic.</p>
+    <video controls preload="metadata" poster="assets/thumbnail_16x9.png">
+      <source src="assets/settle_demo.mp4" type="video/mp4">
+      <track kind="captions" src="assets/settle_demo.vtt" srclang="en" label="English" default>
+    </video>
+  </section>
+
+  <section id="live">
+    <h2>Live on a real phone</h2>
+    <p class="sub">These are unedited screenshots from Google Messages on Android. The agent is Claude on Amazon Bedrock, running in AgentCore Runtime, and the messages go through AWS End User Messaging RCS.</p>
+    <div class="shots">
+      <figure><img src="assets/rcs-1-rich-card.jpg" alt="RCS rich card with no health information"><figcaption>First touch, with no PHI</figcaption></figure>
+      <figure><img src="assets/rcs-2-verify-consent.jpg" alt="Agent asks for date of birth, then consent"><figcaption>Verify, then consent</figcaption></figure>
+      <figure><img src="assets/rcs-3-payment-options.jpg" alt="Three payment options issued by the policy engine"><figcaption>Policy-issued options</figcaption></figure>
+      <figure><img src="assets/rcs-4-enrolled.jpg" alt="Enrolled in a plan with a secure payment link"><figcaption>Enrolled, with a secure link</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it does</h2>
+    <p class="sub">One agent on every channel, in the patient's language (the demo shows English over RCS and Spanish over WhatsApp).</p>
+    <div class="cards">
+      <div class="card"><div class="k">01 · EXPLAIN</div><h3>What do I owe, and why?</h3><p>The adjudicated claim, line by line: what was billed, what insurance discounted (never owed), and the patient's share with the reason: deductible, copay or coinsurance.</p></div>
+      <div class="card"><div class="k">02 · ARRANGE</div><h3>A plan the patient chose</h3><p>Only the options the practice's policy engine issues. The patient enrols with their own "yes", pays through a secure link, and gets the confirmation by Amazon SES.</p></div>
+      <div class="card"><div class="k">03 · ESCALATE</div><h3>Humans for the hard parts</h3><p>"I already paid" is investigated read-only. The agent finds the unapplied front-desk payment and opens a staff ticket with the evidence and the exact fix.</p></div>
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <h2>Policy lives in code, not in the prompt</h2>
+    <p class="sub">The model decides what to say and which tool to call. The tools decide what's allowed, and every rule is a unit test that runs in CI.</p>
+    <table>
+      <tr><th>Guardrail</th><th>Enforced in</th></tr>
+      <tr><td><span class="ok">✓</span>No account details before identity verification (number on file + date of birth)</td><td><code>tools._need_verified</code></td></tr>
+      <tr><td><span class="ok">✓</span>Three failed verifications lock the chat and page staff</td><td><code>verify_identity</code></td></tr>
+      <tr><td><span class="ok">✓</span>Visit details need consent on this channel; balances don't</td><td><code>explain_statement</code></td></tr>
+      <tr><td><span class="ok">✓</span>Payment terms come only from the policy engine</td><td><code>policy.plan_options</code></td></tr>
+      <tr><td><span class="ok">✓</span>No enrolment without an issued offer <em>and</em> the patient's own yes. This fired live on the phone.</td><td><code>accept_offer</code></td></tr>
+      <tr><td><span class="ok">✓</span>The agent investigates but never moves money; card numbers never enter the chat</td><td><code>investigate_payment</code></td></tr>
+      <tr><td><span class="ok">✓</span>STOP / HELP handled before any model call; unknown senders learn nothing</td><td><code>router.handle</code></td></tr>
+      <tr><td><span class="ok">✓</span>Every tool call goes into a SHA-256 hash-chained audit log (no PHI stored)</td><td><code>audit.AuditLog</code></td></tr>
+    </table>
+  </section>
+
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <p class="sub">Messages come in on each channel and go to one agent in AgentCore, and replies go out on the same channel. It's one AWS CDK stack.</p>
+    <img class="arch" src="assets/architecture.png" alt="Architecture: RCS/SMS via AWS End User Messaging, WhatsApp via End User Messaging Social and email via SES feed channel Lambdas, which invoke a Strands agent on Amazon Bedrock AgentCore Runtime backed by DynamoDB and SES">
+    <div class="aws" style="margin-top:22px">
+      <span>Amazon Bedrock AgentCore Runtime</span><span>Amazon Bedrock · Claude</span><span>Strands Agents</span>
+      <span>AWS End User Messaging · RCS &amp; SMS</span><span>End User Messaging Social · WhatsApp</span><span>Amazon SES</span>
+      <span>Amazon SNS</span><span>AWS Lambda</span><span>Amazon DynamoDB</span><span>Amazon EventBridge</span><span>AWS CDK</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Try it</h2>
+    <p class="sub">You can run the same tools and guardrails locally, without an AWS account:</p>
+<pre>git clone https://github.com/icohangar-ops/settle-agent && cd settle-agent
+uv venv -p 3.12 .venv && uv pip install -p .venv -e ".[dev]"
+.venv/bin/pytest -q                 # guardrail tests
+.venv/bin/python -m sim.run_demo    # both demo conversations</pre>
+    <div class="callout">To deploy it to your own AWS account and chat with it from your phone, follow <a href="https://github.com/icohangar-ops/settle-agent/blob/main/docs/DEPLOY.md">docs/DEPLOY.md</a>. The steps are: CDK deploy, create an RCS test agent, register your phone as a tester, and run <span class="mono">scripts/start_demo.py</span>.</div>
+  </section>
+
+  <footer>
+    Settle · MIT licensed · <a href="https://github.com/icohangar-ops/settle-agent">github.com/icohangar-ops/settle-agent</a><br>
+    The practice, patients, providers and payers are all fictional, and all data is synthetic. This is not medical or financial advice.
+  </footer>
+</div>
+</body>
+</html>

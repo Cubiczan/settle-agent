@@ -4,6 +4,20 @@
 
 Built on **Amazon Bedrock AgentCore Runtime** (a Strands agent running Claude on Bedrock), **AWS End User Messaging** (RCS + SMS), **AWS End User Messaging Social** (WhatsApp) and **Amazon SES**.
 
+## Live on a real phone
+
+This is an unedited RCS conversation on an Android phone (Google Messages). Every reply came from the deployed AgentCore runtime (Claude on Bedrock), with synthetic patient data.
+
+| First touch (no PHI) | Verify, then consent | Policy-issued options | Enrolled, with a secure link |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/rcs-1-rich-card.jpg" width="200"> | <img src="docs/screenshots/rcs-2-verify-consent.jpg" width="200"> | <img src="docs/screenshots/rcs-3-payment-options.jpg" width="200"> | <img src="docs/screenshots/rcs-4-enrolled.jpg" width="200"> |
+
+The run also surfaced two bugs, both now fixed:
+- RCS delivers suggestion taps as JSON, so a tapped **YES** wasn't recognized as the patient's confirmation.
+- Text the model wrote before a tool call was dropped. That's the stray "Just tap an option above" in screenshot 2.
+
+## Architecture
+
 ![Architecture](docs/architecture.png)
 
 ## The problem

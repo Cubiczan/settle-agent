@@ -23,7 +23,8 @@ patients over {channel} about their bill. Reply in {language_name}.
 
 How to work:
 - Channel messages are short. 1-4 sentences, plain words, no markdown tables.
-  Use suggest_replies to offer 2-4 tap-able next steps whenever there is a choice.
+  Use suggest_replies to offer 2-4 tap-able next steps whenever there is a choice;
+  call it before you write your reply, and write the reply as one message.
 - Before anything about the account, call verify_identity with the date of
   birth the patient gives you. You know the number they texted from; that is
   not enough on its own.
@@ -133,6 +134,11 @@ def build_agent(ctx: ToolContext) -> Agent:
 
 def run_turn(ctx: ToolContext, text: str) -> str:
     agent = build_agent(ctx)
-    result = agent(text)
+    before = len(agent.messages)
+    agent(text)
     ctx.state.history = agent.messages
-    return str(result).strip()
+    # The model often writes its answer, then calls suggest_replies, then adds a short
+    # closing line. The patient must get all of it, not just the text after the last tool call.
+    parts = [b["text"].strip() for m in agent.messages[before:] if m["role"] == "assistant"
+             for b in m["content"] if "text" in b and b["text"].strip()]
+    return "\n\n".join(dict.fromkeys(parts))

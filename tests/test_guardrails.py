@@ -120,6 +120,9 @@ def test_inbound_parsers():
     sms = parse_eum_sms('{"originationNumber":"+12065550142","destinationNumber":"+12065550100",'
                         '"messageBody":"hi","inboundMessageId":"y"}')
     assert (rcs.channel, sms.channel) == ("rcs", "sms")
+    tap = parse_eum_sms('{"originationNumber":"+12065550142","destinationNumber":"rcs-a1b2c3d4","messageBody":'
+                        '"{\\"type\\":\\"SUGGESTION\\",\\"text\\":\\"YES\\",\\"postbackData\\":\\"YES\\"}"}')
+    assert tap.text == "YES"  # a tapped YES must count as the patient's own yes
     import json
     entry = {"changes": [{"value": {"metadata": {"phone_number_id": "pn1"},
              "messages": [{"from": "13055550177", "id": "wamid", "type": "interactive",

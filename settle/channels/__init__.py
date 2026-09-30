@@ -29,8 +29,23 @@ def parse_eum_sms(sns_message: str) -> Inbound:
     m = json.loads(sns_message)
     dest = m.get("destinationNumber", "")
     channel = "sms" if dest.startswith("+") else "rcs"
-    return Inbound(channel, m["originationNumber"], m.get("messageBody", ""),
+    return Inbound(channel, m["originationNumber"], _rcs_body(m.get("messageBody", "")),
                    m.get("inboundMessageId", ""), dest)
+
+
+def _rcs_body(body: str) -> str:
+    """RCS suggestion taps arrive as a JSON body, e.g.
+    {"type":"SUGGESTION","text":"YES","postbackData":"YES"}. Unwrap to what the patient saw,
+    so a tapped "YES" counts as the patient's own yes."""
+    if not body.startswith("{"):
+        return body
+    try:
+        obj = json.loads(body)
+    except ValueError:
+        return body
+    if isinstance(obj, dict) and obj.get("type") == "SUGGESTION":
+        return obj.get("text") or obj.get("postbackData") or body
+    return body
 
 
 def parse_eum_social(sns_message: str) -> list[Inbound]:

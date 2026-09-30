@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+build/
+infra/cdk.out/
+sim/out/
+media/work/
+.env
+.bedrock_agentcore*
+submission/PRIVATE.md
+submission/frames/
+submission/*.mp4
+media/rcs/*.html
+*.log

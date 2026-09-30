@@ -1,0 +1,12 @@
+{
+  "app": "../.venv/bin/python app.py",
+  "context": {
+    "rcsAgentArn": "",
+    "smsOrigination": "",
+    "waPhoneNumberId": "",
+    "fromEmail": "",
+    "staffEmail": "",
+    "emailOverrideTo": "",
+    "modelId": "us.anthropic.claude-opus-5-5"
+  }
+}

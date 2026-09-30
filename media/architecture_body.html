@@ -1,0 +1,47 @@
+<style>
+.bx{position:absolute;background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;font-size:20px;line-height:1.35;color:var(--mute)}
+.bx b{display:block;color:var(--ink);font-size:23px;margin-bottom:4px}
+.bx.aws{border-color:#2DD4BF55}
+.bx.core{border:2px solid var(--teal);background:linear-gradient(180deg,#0F2A34,#111A2E)}
+.bx .in{background:#0B1220;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:9px;color:var(--ink);font-size:19px}
+.ph{position:absolute;left:72px;width:220px;height:100px;border-radius:16px;border:1.5px dashed #3A4A6B;display:grid;place-items:center;font-size:24px;font-weight:700}
+.lbl{position:absolute;font-size:17px;color:var(--teal);font-family:"SF Mono",Menlo,monospace}
+</style>
+<div class='ph' style='top:200px'>📱 RCS</div>
+<div class='ph' style='top:330px'>💬 SMS</div>
+<div class='ph' style='top:460px'>🟢 WhatsApp</div>
+<div class='ph' style='top:590px'>✉️ Email</div>
+
+<div class='bx aws' style='left:370px;top:200px;width:360px;height:230px'><b>AWS End User Messaging</b>RCS agent + SMS number<br>two-way → Amazon SNS<br><span style='color:var(--teal)'>SendRcsMessage</span> + SMS fallback</div>
+<div class='bx aws' style='left:370px;top:460px;width:360px;height:100px'><b>EUM Social · WhatsApp</b>webhook events → SNS</div>
+<div class='bx aws' style='left:370px;top:590px;width:360px;height:100px'><b>Amazon SES</b>receipt rule → S3 (inbound)</div>
+
+<div class='bx' style='left:800px;top:200px;width:260px;height:490px'><b>Channel Lambdas</b>parse event<br>STOP / HELP / START<br>(before any model call)<br><br>dispatch to agent<br><br>render reply natively:<br>RCS chips · WA buttons · SMS list</div>
+
+<div class='bx core' style='left:1130px;top:200px;width:420px;height:490px'><b style='color:var(--teal)'>Amazon Bedrock AgentCore Runtime</b>one isolated session per conversation
+  <div class='in'>Strands agent · 10 tools</div>
+  <div class='in'>Identity gate + channel consent</div>
+  <div class='in'>Policy engine (the only source of money terms)</div>
+  <div class='in'>Read-only ledger · staff escalation</div>
+  <div class='in'>Hash-chained audit of every tool call</div>
+</div>
+<div class='bx aws' style='left:1130px;top:745px;width:420px;height:100px'><b>Amazon Bedrock</b>Claude · Bedrock Guardrails</div>
+
+<div class='bx' style='left:1610px;top:200px;width:240px;height:200px'><b>DynamoDB</b>ledger<br>conversations (TTL)<br>audit (append-only)<br>tickets</div>
+<div class='bx aws' style='left:1610px;top:430px;width:240px;height:125px'><b>Amazon SES</b>plan confirmations<br>staff alerts</div>
+<div class='bx' style='left:1610px;top:580px;width:240px;height:118px'><b>EventBridge</b>daily outreach λ<br>first touch, no PHI</div>
+
+<svg width='1920' height='1080' style='position:absolute;inset:0;pointer-events:none'>
+  <defs><marker id='a' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto'><path d='M0,0 L10,5 L0,10 z' fill='#2DD4BF'/></marker></defs>
+  <g stroke='#2DD4BF' stroke-width='2.5' fill='none' marker-end='url(#a)'>
+    <line x1='294' y1='250' x2='366' y2='250'/><line x1='294' y1='380' x2='366' y2='380'/>
+    <line x1='294' y1='510' x2='366' y2='510'/><line x1='294' y1='640' x2='366' y2='640'/>
+    <line x1='732' y1='315' x2='796' y2='315'/><line x1='732' y1='510' x2='796' y2='510'/><line x1='732' y1='640' x2='796' y2='640'/>
+    <line x1='1062' y1='445' x2='1126' y2='445'/>
+    <line x1='1340' y1='692' x2='1340' y2='741'/>
+    <line x1='1552' y1='300' x2='1606' y2='300'/><line x1='1552' y1='492' x2='1606' y2='492'/>
+    <polyline points='930,692 930,800 550,800 550,696' stroke-dasharray='8 6'/>
+  </g>
+</svg>
+<div class='lbl' style='left:1066px;top:410px'>Invoke</div>
+<div class='lbl' style='left:560px;top:812px;width:560px'>reply on the same channel · RCS falls back to SMS</div>

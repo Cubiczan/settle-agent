@@ -1,0 +1,107 @@
+<!doctype html><html><head><meta charset='utf-8'><style>:root{--bg:#0B1220;--panel:#111A2E;--line:#23304D;--ink:#E8EEF9;--mute:#94A3C0;--teal:#2DD4BF;--amber:#F5B84B;--red:#F87171;--green:#4ADE80;--blue:#60A5FA}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden}
+body{background:radial-gradient(1200px 700px at 80% -10%,#16244A 0%,var(--bg) 60%);color:var(--ink);font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;position:relative}
+.brand{position:absolute;top:44px;left:72px;display:flex;align-items:center;gap:14px;font-weight:700;font-size:28px;letter-spacing:.5px}
+.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--teal),#0EA5E9);display:grid;place-items:center;color:#04121A;font-weight:900;font-size:26px}
+.tag{position:absolute;top:50px;right:72px;font-size:20px;color:var(--mute);letter-spacing:2px;text-transform:uppercase}
+.caption{position:absolute;left:72px;right:72px;bottom:48px;font-size:30px;line-height:1.35;color:var(--ink);padding:22px 30px;background:rgba(17,26,46,.88);border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:14px}
+.caption b{color:var(--teal)}
+h1{font-size:96px;line-height:1.02;font-weight:800;letter-spacing:-2px}
+h2{font-size:64px;line-height:1.08;font-weight:800;letter-spacing:-1px}
+.lede{font-size:34px;color:var(--mute);line-height:1.4}
+.hl{color:var(--teal)} .amb{color:var(--amber)}
+/* phone */
+.phone{position:absolute;left:150px;top:118px;width:470px;height:800px;border-radius:54px;background:#05070C;padding:14px;box-shadow:0 40px 120px rgba(0,0,0,.55),0 0 0 2px #2A3550}
+.screen{width:100%;height:100%;border-radius:42px;overflow:hidden;display:flex;flex-direction:column}
+.appbar{padding:22px 22px 14px;display:flex;align-items:center;gap:12px;font-size:19px;font-weight:600}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:17px}
+.appbar small{display:block;font-size:13px;font-weight:500;opacity:.75}
+.thread{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:10px 16px 18px;overflow:hidden}
+.msg{max-width:84%;padding:11px 15px;border-radius:20px;font-size:16.5px;line-height:1.38;white-space:pre-wrap;word-wrap:break-word}
+.msg a{text-decoration:underline;word-break:break-all}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:-2px}
+.chip{font-size:14.5px;padding:7px 13px;border-radius:18px;font-weight:600}
+/* RCS look */
+.rcs .screen{background:#FFFFFF;color:#1F1F1F}
+.rcs .appbar{background:#F3F6FC;border-bottom:1px solid #E2E8F2}
+.rcs .avatar{background:#0F766E;color:#fff}
+.rcs .in{align-self:flex-start;background:#E9EEF6;border-bottom-left-radius:6px}
+.rcs .out{align-self:flex-end;background:#1A73E8;color:#fff;border-bottom-right-radius:6px}
+.rcs .chip{border:1.5px solid #1A73E8;color:#1A73E8;background:#fff}
+.card{align-self:flex-start;width:86%;border-radius:20px;overflow:hidden;background:#fff;border:1px solid #DDE3EE}
+.card .media{height:150px;background:linear-gradient(135deg,#0F766E,#0EA5E9);display:grid;place-items:center;color:#fff;font-size:44px;font-weight:900}
+.card .body{padding:14px 16px}
+.card .t{font-weight:700;font-size:17px;margin-bottom:6px}
+.card .d{font-size:15px;color:#444;line-height:1.35}
+.card .chips{padding:0 14px 14px;margin:0}
+/* WhatsApp look */
+.wa .screen{background:#ECE5DD;color:#111}
+.wa .appbar{background:#075E54;color:#fff}
+.wa .avatar{background:#25D366;color:#063}
+.wa .in{align-self:flex-start;background:#fff;border-top-left-radius:6px}
+.wa .out{align-self:flex-end;background:#DCF8C6;border-top-right-radius:6px}
+.wa .chips{flex-direction:column;align-self:flex-start;width:84%;gap:4px}
+.wa .chip{background:#fff;color:#0A7CFF;text-align:center;border-radius:10px;padding:9px}
+.wa .tpl{align-self:flex-start;background:#fff;border-radius:14px;padding:12px 15px;font-size:16px;max-width:84%}
+.wa .tpl .t{font-weight:700;margin-bottom:4px}
+/* right panel */
+.side{position:absolute;left:700px;right:72px;top:130px}
+.side .kicker{font-size:22px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:14px}
+.side h3{font-size:46px;line-height:1.12;font-weight:800;margin-bottom:26px;letter-spacing:-.5px}
+.trace{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 26px}
+.trace .hd{font-size:18px;color:var(--mute);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.call{display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--line);font-size:23px}
+.call:first-of-type{border-top:none}
+.call code{font-family:"SF Mono",Menlo,monospace;color:var(--ink)}
+.pill{margin-left:auto;font-size:17px;font-weight:700;padding:5px 12px;border-radius:999px;font-family:"SF Mono",Menlo,monospace}
+.ok{background:rgba(74,222,128,.14);color:var(--green)} .blk{background:rgba(248,113,113,.15);color:var(--red)} .amb-p{background:rgba(245,184,75,.15);color:var(--amber)}
+.detail{margin-top:18px;font-size:21px;color:var(--mute);line-height:1.45;font-family:"SF Mono",Menlo,monospace;white-space:pre-wrap}
+html,body{width:1920px;height:1080px}</style></head><body><div class='brand'><div class='logo'>S</div>Settle</div><div class='tag'>Architecture</div><style>
+.bx{position:absolute;background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;font-size:20px;line-height:1.35;color:var(--mute)}
+.bx b{display:block;color:var(--ink);font-size:23px;margin-bottom:4px}
+.bx.aws{border-color:#2DD4BF55}
+.bx.core{border:2px solid var(--teal);background:linear-gradient(180deg,#0F2A34,#111A2E)}
+.bx .in{background:#0B1220;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:9px;color:var(--ink);font-size:19px}
+.ph{position:absolute;left:72px;width:220px;height:100px;border-radius:16px;border:1.5px dashed #3A4A6B;display:grid;place-items:center;font-size:24px;font-weight:700}
+.lbl{position:absolute;font-size:17px;color:var(--teal);font-family:"SF Mono",Menlo,monospace}
+</style>
+<div class='ph' style='top:200px'>📱 RCS</div>
+<div class='ph' style='top:330px'>💬 SMS</div>
+<div class='ph' style='top:460px'>🟢 WhatsApp</div>
+<div class='ph' style='top:590px'>✉️ Email</div>
+
+<div class='bx aws' style='left:370px;top:200px;width:360px;height:230px'><b>AWS End User Messaging</b>RCS agent + SMS number<br>two-way → Amazon SNS<br><span style='color:var(--teal)'>SendRcsMessage</span> + SMS fallback</div>
+<div class='bx aws' style='left:370px;top:460px;width:360px;height:100px'><b>EUM Social · WhatsApp</b>webhook events → SNS</div>
+<div class='bx aws' style='left:370px;top:590px;width:360px;height:100px'><b>Amazon SES</b>receipt rule → S3 (inbound)</div>
+
+<div class='bx' style='left:800px;top:200px;width:260px;height:490px'><b>Channel Lambdas</b>parse event<br>STOP / HELP / START<br>(before any model call)<br><br>dispatch to agent<br><br>render reply natively:<br>RCS chips · WA buttons · SMS list</div>
+
+<div class='bx core' style='left:1130px;top:200px;width:420px;height:490px'><b style='color:var(--teal)'>Amazon Bedrock AgentCore Runtime</b>one isolated session per conversation
+  <div class='in'>Strands agent · 10 tools</div>
+  <div class='in'>Identity gate + channel consent</div>
+  <div class='in'>Policy engine (the only source of money terms)</div>
+  <div class='in'>Read-only ledger · staff escalation</div>
+  <div class='in'>Hash-chained audit of every tool call</div>
+</div>
+<div class='bx aws' style='left:1130px;top:745px;width:420px;height:100px'><b>Amazon Bedrock</b>Claude · Bedrock Guardrails</div>
+
+<div class='bx' style='left:1610px;top:200px;width:240px;height:200px'><b>DynamoDB</b>ledger<br>conversations (TTL)<br>audit (append-only)<br>tickets</div>
+<div class='bx aws' style='left:1610px;top:430px;width:240px;height:125px'><b>Amazon SES</b>plan confirmations<br>staff alerts</div>
+<div class='bx' style='left:1610px;top:580px;width:240px;height:118px'><b>EventBridge</b>daily outreach λ<br>first touch, no PHI</div>
+
+<svg width='1920' height='1080' style='position:absolute;inset:0;pointer-events:none'>
+  <defs><marker id='a' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto'><path d='M0,0 L10,5 L0,10 z' fill='#2DD4BF'/></marker></defs>
+  <g stroke='#2DD4BF' stroke-width='2.5' fill='none' marker-end='url(#a)'>
+    <line x1='294' y1='250' x2='366' y2='250'/><line x1='294' y1='380' x2='366' y2='380'/>
+    <line x1='294' y1='510' x2='366' y2='510'/><line x1='294' y1='640' x2='366' y2='640'/>
+    <line x1='732' y1='315' x2='796' y2='315'/><line x1='732' y1='510' x2='796' y2='510'/><line x1='732' y1='640' x2='796' y2='640'/>
+    <line x1='1062' y1='445' x2='1126' y2='445'/>
+    <line x1='1340' y1='692' x2='1340' y2='741'/>
+    <line x1='1552' y1='300' x2='1606' y2='300'/><line x1='1552' y1='492' x2='1606' y2='492'/>
+    <polyline points='930,692 930,800 550,800 550,696' stroke-dasharray='8 6'/>
+  </g>
+</svg>
+<div class='lbl' style='left:1066px;top:410px'>Invoke</div>
+<div class='lbl' style='left:560px;top:812px;width:560px'>reply on the same channel · RCS falls back to SMS</div>
+<div class='caption'>Channels in, <b>one agent</b> in AgentCore, replies out on the same channel.</div></body></html>

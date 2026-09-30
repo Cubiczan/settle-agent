@@ -1,0 +1,12 @@
+[project]
+name = "settle"
+version = "0.1.0"
+description = "Agentic patient-billing concierge on AWS End User Messaging, Amazon SES and Amazon Bedrock AgentCore"
+requires-python = ">=3.12"
+dependencies = ["strands-agents>=1.57", "bedrock-agentcore>=1.24", "boto3>=1.43.37"]
+
+[project.optional-dependencies]
+dev = ["pytest", "aws-cdk-lib>=2.272", "constructs", "bedrock-agentcore-starter-toolkit"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

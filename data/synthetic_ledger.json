@@ -1,0 +1,72 @@
+{
+  "_note": "Entirely synthetic. No real patients, practices, payers or providers.",
+  "practice": {
+    "id": "PR-01",
+    "name": "Riverbend Family Medicine",
+    "billing_phone": "+12065550100",
+    "billing_email": "billing@riverbend.example",
+    "timezone": "America/Los_Angeles"
+  },
+  "patients": {
+    "P-1001": {
+      "first_name": "Jordan",
+      "last_name": "Lee",
+      "dob": "1987-03-14",
+      "phone": "+12065550142",
+      "email": "jordan.lee@example.com",
+      "language": "en",
+      "preferred_channel": "rcs",
+      "consent": {"sms": true, "rcs": true, "whatsapp": false, "email": true, "phi_over_messaging": false}
+    },
+    "P-1002": {
+      "first_name": "Ana",
+      "last_name": "Morales",
+      "dob": "1979-11-02",
+      "phone": "+13055550177",
+      "email": "ana.morales@example.com",
+      "language": "es",
+      "preferred_channel": "whatsapp",
+      "consent": {"sms": true, "rcs": false, "whatsapp": true, "email": true, "phi_over_messaging": false}
+    }
+  },
+  "encounters": {
+    "E-5531": {
+      "patient_id": "P-1001",
+      "date": "2026-08-12",
+      "provider": "Dr. Priya Raman",
+      "payer": "Acme Health PPO",
+      "claim_status": "adjudicated",
+      "lines": [
+        {"cpt": "99214", "billed": 245.00, "allowed": 168.40, "payer_paid": 0.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 76.60}, {"group": "PR", "carc": "1", "amount": 168.40}]},
+        {"cpt": "93000", "billed": 110.00, "allowed": 64.20, "payer_paid": 0.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 45.80}, {"group": "PR", "carc": "1", "amount": 64.20}]},
+        {"cpt": "80053", "billed": 98.00, "allowed": 42.10, "payer_paid": 0.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 55.90}, {"group": "PR", "carc": "1", "amount": 42.10}]},
+        {"cpt": "36415", "billed": 25.00, "allowed": 8.90, "payer_paid": 0.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 16.10}, {"group": "PR", "carc": "1", "amount": 8.90}]}
+      ]
+    },
+    "E-5620": {
+      "patient_id": "P-1002",
+      "date": "2026-09-02",
+      "provider": "Dr. Marcus Obi",
+      "payer": "Sunrise Health HMO",
+      "claim_status": "adjudicated",
+      "lines": [
+        {"cpt": "99213", "billed": 180.00, "allowed": 112.00, "payer_paid": 72.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 68.00}, {"group": "PR", "carc": "3", "amount": 40.00}]},
+        {"cpt": "87880", "billed": 45.00, "allowed": 25.00, "payer_paid": 0.00,
+         "adjustments": [{"group": "CO", "carc": "45", "amount": 20.00}, {"group": "PR", "carc": "2", "amount": 25.00}]}
+      ]
+    }
+  },
+  "payments": [
+    {"id": "PAY-7781", "patient_id": "P-1002", "date": "2026-09-02", "amount": 40.00,
+     "method": "card_present", "source": "front_desk", "applied_to": null}
+  ],
+  "statements": [
+    {"patient_id": "P-1001", "date": "2026-09-01", "number": 1},
+    {"patient_id": "P-1002", "date": "2026-09-15", "number": 1}
+  ]
+}

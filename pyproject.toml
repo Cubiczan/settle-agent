@@ -10,3 +10,4 @@ dev = ["pytest", "aws-cdk-lib>=2.272", "constructs", "bedrock-agentcore-starter-
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]

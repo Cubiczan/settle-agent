@@ -4,6 +4,10 @@
 
 Built on **Amazon Bedrock AgentCore Runtime** (a Strands agent running Claude on Bedrock), **AWS End User Messaging** (RCS + SMS), **AWS End User Messaging Social** (WhatsApp) and **Amazon SES**.
 
+[![Settle demo video](submission/thumbnail_16x9.png)](submission/settle_demo.mp4)
+
+**Demo video (3 min):** [submission/settle_demo.mp4](submission/settle_demo.mp4) · captions in [settle_demo.srt](submission/settle_demo.srt) · rebuilt from real runs by [media/build_video.py](media/build_video.py)
+
 ## Live on a real phone
 
 This is an unedited RCS conversation on an Android phone (Google Messages). Every reply came from the deployed AgentCore runtime (Claude on Bedrock), with synthetic patient data.

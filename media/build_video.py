@@ -151,9 +151,8 @@ def scenes(j: dict, a: dict, tests: dict) -> list[dict]:
         </div>"""))
 
     add("03_solution",
-        "Settle is an agent on Amazon Bedrock Agent Core that handles billing conversations over R C S, S M S, "
-        "WhatsApp and email. It explains the bill line by line, offers only the payment options the practice approved, "
-        "and hands disputes to staff with the evidence already gathered.",
+        "Settle is an agent on Amazon Bedrock Agent Core for billing conversations over R C S, S M S, WhatsApp and email. "
+        "It explains the bill, offers only practice-approved payment options, and hands disputes to staff with the evidence.",
         frame("The solution", """
         <div style='position:absolute;left:72px;top:180px;width:1700px'>
           <h2>One agent, every channel. <span class='hl'>Policy in code, not in the prompt.</span></h2>
@@ -170,12 +169,8 @@ def scenes(j: dict, a: dict, tests: dict) -> list[dict]:
 
     jt = j["turns"]
     steps = [
-        (0, "A new statement is ready. Jordan gets a rich card over R C S. There's no amount, no service and no provider on it. "
-            "The first message carries no health information at all.",
-         "First touch", "A rich card with no PHI", [], "send_rcs_message(RichCard)\n+ SMS FallbackConfiguration",
-         "RCS rich card via <b>SendRcsMessage</b>, with SMS fallback for non-RCS phones"),
-        (1, "Jordan taps Review my bill. First, the agent asks for a date of birth. "
-            "The account tools refuse to answer until verification succeeds.",
+        (1, "Jordan gets an R C S rich card with no health information on it, and taps Review my bill. "
+            "First, the agent asks for a date of birth. The account tools refuse to answer until verification succeeds.",
          "Verify", "Identity before anything else", jt[0]["trace"], "",
          "Possession of the number on file <b>+</b> date of birth. Three misses locks the chat."),
         (2, "Once Jordan is verified, the agent shares the balance. Visit details wait until Jordan agrees to see them on this channel.",
@@ -204,6 +199,20 @@ def scenes(j: dict, a: dict, tests: dict) -> list[dict]:
         add(f"04_jordan_{i}", narr, frame("Demo 1 · RCS · English",
             rcs_phone([dict(x, kind="card" if x["kind"] == "rich_card" else x["kind"]) for x in thread(j, upto, "card")])
             + side(kick, head, trace, detail), cap, foot))
+
+    shots = sorted((ROOT / "docs" / "screenshots").glob("rcs-*.jpg"))
+    if shots:
+        labels = ["First touch", "Verify, then consent", "Policy-issued options", "Enrolled"]
+        cells = "".join(
+            f"<div style='text-align:center'><img src='{p.as_uri()}' style='height:640px;border-radius:28px;"
+            f"border:10px solid #05070C;box-shadow:0 30px 80px rgba(0,0,0,.5)'>"
+            f"<div style='margin-top:18px;font-size:24px;color:var(--mute)'>{esc(l)}</div></div>"
+            for p, l in zip(shots, labels))
+        add("04_jordan_live",
+            "And that's not a mockup: here's the same flow on a real Android phone, against the deployed stack.",
+            frame("Live · real Android phone · RCS",
+                  f"<div style='position:absolute;left:72px;right:72px;top:150px;display:flex;justify-content:space-between'>{cells}</div>",
+                  "Unedited screenshots · Google Messages · replies from the deployed <b>AgentCore</b> runtime"))
 
     at = a["turns"]
     tk = a["tickets"][0] if a["tickets"] else {}
@@ -319,8 +328,12 @@ def sh(*cmd):
 def screenshot(html_text: str, png: Path, w=1920, h=1080):
     src = WORK / (png.stem + ".html")
     src.write_text(html_text)
+    # Headless Chrome sometimes lays out a viewport shorter than --window-size, leaving a white
+    # band at the bottom. Render taller than needed, then crop to the exact frame.
     sh(CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
-       f"--window-size={w},{h}", "--virtual-time-budget=1500", f"--screenshot={png}", src.as_uri())
+       f"--window-size={w},{h + 240}", "--virtual-time-budget=2500", f"--screenshot={png}", src.as_uri())
+    from PIL import Image
+    Image.open(png).convert("RGB").crop((0, 0, w, h)).save(png)
 
 
 def narrate(text: str, wav: Path) -> float:
@@ -364,16 +377,9 @@ def thumbnail():
           </div>
           <div style='margin-top:{36*s}px;font-size:{27*s}px;color:#94A3C0'>Bedrock AgentCore · End User Messaging · SES</div>
         </div>
-        <div style='position:absolute;right:{70*s}px;top:{110*s}px;width:{520*s}px;height:{800*s}px;border-radius:{50*s}px;background:#05070C;padding:{12*s}px;box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 2px #2A3550'>
-          <div style='width:100%;height:100%;border-radius:{40*s}px;background:#fff;color:#1F1F1F;display:flex;flex-direction:column;justify-content:flex-end;gap:{12*s}px;padding:{22*s}px;font-size:{21*s}px;line-height:1.35;overflow:hidden'>
-            <div style='margin:-{22*s}px -{22*s}px auto;padding:{26*s}px {22*s}px {16*s}px;background:#F3F6FC;border-bottom:1px solid #E2E8F2;display:flex;gap:{12*s}px;align-items:center;font-weight:700;font-size:{21*s}px'><span style='width:{40*s}px;height:{40*s}px;border-radius:50%;background:#0F766E;color:#fff;display:grid;place-items:center'>R</span><span>Riverbend Family Medicine<br><span style='font-weight:500;font-size:{15*s}px;opacity:.7'>✓ Verified business · RCS</span></span></div>
-            <div style='align-self:flex-start;width:88%;border:1px solid #DDE3EE;border-radius:{20*s}px;overflow:hidden'><div style='height:{110*s}px;background:linear-gradient(135deg,#0F766E,#0EA5E9)'></div><div style='padding:{12*s}px {16*s}px;font-size:{19*s}px'><b>New statement ready</b><br>Review it here, no login needed.</div><div style='padding:0 {14*s}px {14*s}px;display:flex;gap:{8*s}px'><span style='border:2px solid #1A73E8;color:#1A73E8;padding:{6*s}px {12*s}px;border-radius:{18*s}px;font-weight:700;font-size:{17*s}px'>Review my bill</span></div></div>
-            <div style='align-self:flex-end;background:#1A73E8;color:#fff;padding:{12*s}px {16*s}px;border-radius:{20*s}px'>Why do I owe $283.60?</div>
-            <div style='align-self:flex-start;background:#E9EEF6;padding:{12*s}px {16*s}px;border-radius:{20*s}px'>Your plan discounted $194.40. You never owe that. The rest went to your deductible.</div>
-            <div style='align-self:flex-end;background:#1A73E8;color:#fff;padding:{12*s}px {16*s}px;border-radius:{20*s}px'>Can I split it?</div>
-            <div style='align-self:flex-start;background:#E9EEF6;padding:{12*s}px {16*s}px;border-radius:{20*s}px'>Yes: 4 × $70.90, no interest.</div>
-            <div style='display:flex;gap:{8*s}px'>{''.join(f"<span style='border:2px solid #1A73E8;color:#1A73E8;padding:{7*s}px {13*s}px;border-radius:{18*s}px;font-weight:700;font-size:{18*s}px'>{c}</span>" for c in ['Option 3','Pay in full'])}</div>
-          </div></div>"""
+        <div style='position:absolute;right:{90*s}px;top:{70*s}px;width:{397*s}px;border-radius:{44*s}px;overflow:hidden;border:{12*s}px solid #05070C;box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 2px #2A3550'>
+          <img src='{(ROOT / "docs" / "screenshots" / "rcs-4-enrolled.jpg").as_uri()}' style='width:100%;display:block'></div>
+        <div style='position:absolute;right:{90*s}px;top:{920*s}px;width:{397*s}px;text-align:center;font-size:{20*s}px;color:#94A3C0'>Live on a real phone · RCS</div>"""
         screenshot(page(body, w, h), OUT / name, w, h)
 
 

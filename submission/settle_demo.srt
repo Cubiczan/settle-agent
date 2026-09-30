@@ -7,61 +7,61 @@ Settle. An agentic billing assistant that meets patients where they already are:
 After a visit, most patients get a paper statement they can't decode: codes, adjustments, a deductible nobody explained. So they call during business hours, wait on hold, or put it off, and the balance ages into collections.
 
 3
-00:00:20,324 --> 00:00:36,315
-Settle is an agent on Amazon Bedrock Agent Core that handles billing conversations over R C S, S M S, WhatsApp and email. It explains the bill line by line, offers only the payment options the practice approved, and hands disputes to staff with the evidence already gathered.
+00:00:20,324 --> 00:00:34,051
+Settle is an agent on Amazon Bedrock Agent Core for billing conversations over R C S, S M S, WhatsApp and email. It explains the bill, offers only practice-approved payment options, and hands disputes to staff with the evidence.
 
 4
-00:00:36,965 --> 00:00:46,471
-A new statement is ready. Jordan gets a rich card over R C S. There's no amount, no service and no provider on it. The first message carries no health information at all.
+00:00:34,701 --> 00:00:46,190
+Jordan gets an R C S rich card with no health information on it, and taps Review my bill. First, the agent asks for a date of birth. The account tools refuse to answer until verification succeeds.
 
 5
-00:00:47,121 --> 00:00:55,162
-Jordan taps Review my bill. First, the agent asks for a date of birth. The account tools refuse to answer until verification succeeds.
-
-6
-00:00:55,812 --> 00:01:02,595
+00:00:46,840 --> 00:00:53,623
 Once Jordan is verified, the agent shares the balance. Visit details wait until Jordan agrees to see them on this channel.
 
-7
-00:01:03,245 --> 00:01:13,577
+6
+00:00:54,273 --> 00:01:04,605
 Then it explains the bill: four services, an insurance discount Jordan never owes, and the rest applied to the deductible. It's plain language, and it's grounded in the adjudicated claim.
 
-8
-00:01:14,227 --> 00:01:25,717
+7
+00:01:05,255 --> 00:01:16,745
 Jordan asks for twenty dollars a month. That's outside policy, so the agent offers what's possible: a prompt-pay discount, or up to four payments with no interest, plus financial assistance screening.
 
-9
-00:01:26,367 --> 00:01:35,615
+8
+00:01:17,395 --> 00:01:26,644
 Jordan taps four payments. The agent tries to enroll, and the tool blocks it: a button tap isn't an explicit yes. So the agent restates the terms and asks.
 
-10
-00:01:36,266 --> 00:01:43,297
+9
+00:01:27,294 --> 00:01:34,325
 Jordan says yes. Now enrollment goes through. A secure payment link comes back, and S E S emails the confirmation.
 
+10
+00:01:34,975 --> 00:01:40,266
+And that's not a mockup: here's the same flow on a real Android phone, against the deployed stack.
+
 11
-00:01:43,947 --> 00:01:51,733
+00:01:40,916 --> 00:01:48,702
 Now Ana. She writes on WhatsApp, in Spanish: why do I owe sixty-five dollars? I already paid my copay at the front desk.
 
 12
-00:01:52,383 --> 00:02:04,224
+00:01:49,352 --> 00:02:01,194
 The agent answers in Spanish and verifies her. Then it investigates: it finds a forty dollar front-desk payment that was never applied. It can't move money, so it opens a ticket for billing with the exact fix.
 
 13
-00:02:04,874 --> 00:02:11,881
+00:02:01,844 --> 00:02:08,850
 Only after Ana agrees to see details here does it explain the remaining twenty-five dollars: her coinsurance for a strep test.
 
 14
-00:02:12,531 --> 00:02:21,219
+00:02:09,500 --> 00:02:18,188
 Staff get the ticket with the evidence attached and a recommended action. There's no call, no hold and no digging, and every step is in a tamper-evident audit log.
 
 15
-00:02:21,869 --> 00:02:43,310
+00:02:18,838 --> 00:02:40,279
 Here's how it runs. S M S and R C S arrive through End User Messaging, WhatsApp through End User Messaging Social, and email through S E S. Channel Lambdas invoke the Strands agent on Agent Core Runtime, one isolated session per conversation, with Claude on Bedrock. State, the ledger, tickets and the audit chain live in Dynamo D B, and replies go back on the same channel.
 
 16
-00:02:43,960 --> 00:02:59,182
+00:02:40,929 --> 00:02:56,151
 The guardrails are code, and they're tested: no health information before verification, lockout after three misses, payment terms only from policy, no enrollment without the patient's yes, stop and help before the model, and a tamper-evident log of every tool call.
 
 17
-00:02:59,832 --> 00:03:09,749
+00:02:56,801 --> 00:03:06,719
 For practices, it means fewer billing calls and faster patient collections. For patients, it's a bill they understand and a plan they chose, in the app they already use. Settle.

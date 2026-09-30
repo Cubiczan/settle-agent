@@ -8,7 +8,5 @@ media/work/
 .env
 .bedrock_agentcore*
 submission/PRIVATE.md
-submission/frames/
-submission/*.mp4
 media/rcs/*.html
 *.log

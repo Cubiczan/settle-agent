@@ -3,6 +3,11 @@
 The model decides what to say and which tool to call next. Tools (settle.tools)
 decide what is allowed. Keeping the policy in code, not the prompt, is the
 design choice everything else rests on.
+
+The model is Amazon Nova on the Bedrock Converse API (Strands BedrockModel).
+The default id is the US Nova Pro inference profile. Credentials come from the
+default AWS chain (the runtime IAM role, or a local profile / OIDC token),
+never from long-lived keys passed into the client.
 """
 from __future__ import annotations
 
@@ -11,11 +16,8 @@ import os
 from strands import Agent, tool
 from strands.models import BedrockModel
 
+from .model import DEFAULT_REGION, resolve_model_id
 from .tools import ToolContext
-
-MODEL_ID = os.environ.get("SETTLE_MODEL_ID", "us.anthropic.claude-opus-5-5")
-GUARDRAIL_ID = os.environ.get("SETTLE_GUARDRAIL_ID")
-GUARDRAIL_VERSION = os.environ.get("SETTLE_GUARDRAIL_VERSION", "DRAFT")
 
 SYSTEM_PROMPT = """\
 You are the billing assistant for {practice}, a medical practice. You talk with
@@ -113,13 +115,29 @@ def build_tools(ctx: ToolContext) -> list:
             email_statement_copy, suggest_replies]
 
 
+def bedrock_model_kwargs(model_id: str | None = None) -> dict:
+    """Arguments for Strands BedrockModel, which calls the Converse API.
+
+    Nova does not use Anthropic InvokeModel fields (`anthropic_version` and
+    the rest). No access-key arguments are set; boto3 uses the IAM role or OIDC.
+    """
+    cfg = {
+        "model_id": resolve_model_id(model_id),
+        "max_tokens": 4096,
+        "region_name": os.environ.get("AWS_REGION", DEFAULT_REGION),
+    }
+    guardrail_id = os.environ.get("SETTLE_GUARDRAIL_ID")
+    if guardrail_id:
+        cfg.update(
+            guardrail_id=guardrail_id,
+            guardrail_version=os.environ.get("SETTLE_GUARDRAIL_VERSION", "DRAFT"),
+            guardrail_redact_input=False,
+        )
+    return cfg
+
+
 def build_agent(ctx: ToolContext) -> Agent:
-    cfg = {"model_id": MODEL_ID, "max_tokens": 4096,
-           "region_name": os.environ.get("AWS_REGION", "us-east-1")}
-    if GUARDRAIL_ID:
-        cfg.update(guardrail_id=GUARDRAIL_ID, guardrail_version=GUARDRAIL_VERSION,
-                   guardrail_redact_input=False)
-    model = BedrockModel(**cfg)
+    model = BedrockModel(**bedrock_model_kwargs())
     st = ctx.state
     return Agent(
         model=model,

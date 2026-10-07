@@ -106,8 +106,8 @@ def thread(sim: dict, upto: int, outreach_kind: str) -> list:
 
 # -- scenes ---------------------------------------------------------------------
 def scenes(j: dict, a: dict, tests: dict) -> list[dict]:
-    foot = {"agentcore": "Live run · deployed Amazon Bedrock AgentCore Runtime · Claude Opus 5.5 · synthetic patient data",
-            "bedrock": "Live run · Strands agent on Amazon Bedrock (Claude Opus 5.5) · synthetic patient data",
+    foot = {"agentcore": "Live run · deployed Amazon Bedrock AgentCore Runtime · Amazon Nova Pro · synthetic patient data",
+            "bedrock": "Live run · Strands agent on Amazon Bedrock (Amazon Nova Pro) · synthetic patient data",
             }.get(j["engine"], "Conversations from the Settle simulator (offline planner) · synthetic data")
     merged = lambda turns: [t for turn in turns for t in turn["trace"]]
     S = []
@@ -258,7 +258,7 @@ def scenes(j: dict, a: dict, tests: dict) -> list[dict]:
     add("06_architecture",
         "Here's how it runs. S M S and R C S arrive through End User Messaging, WhatsApp through End User Messaging Social, "
         "and email through S E S. Channel Lambdas invoke the Strands agent on Agent Core Runtime, one isolated session per conversation, "
-        "with Claude on Bedrock. State, the ledger, tickets and the audit chain live in Dynamo D B, and replies go back on the same channel.",
+        "with Amazon Nova Pro on Bedrock. State, the ledger, tickets and the audit chain live in Dynamo D B, and replies go back on the same channel.",
         arch_html())
 
     rows = "".join(

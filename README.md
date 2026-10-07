@@ -2,7 +2,7 @@
 
 **An agentic patient-billing assistant that explains a medical bill, sets up a payment plan and escalates disputes. It works over RCS, SMS, WhatsApp and email.**
 
-Built on **Amazon Bedrock AgentCore Runtime** (a Strands agent running Claude on Bedrock), **AWS End User Messaging** (RCS + SMS), **AWS End User Messaging Social** (WhatsApp) and **Amazon SES**.
+Built on **Amazon Bedrock AgentCore Runtime** (a Strands agent running Amazon Nova Pro on Bedrock), **AWS End User Messaging** (RCS + SMS), **AWS End User Messaging Social** (WhatsApp) and **Amazon SES**.
 
 [![Settle demo video](submission/thumbnail_16x9.png)](submission/settle_demo.mp4)
 
@@ -10,7 +10,7 @@ Built on **Amazon Bedrock AgentCore Runtime** (a Strands agent running Claude on
 
 ## Live on a real phone
 
-This is an unedited RCS conversation on an Android phone (Google Messages). Every reply came from the deployed AgentCore runtime (Claude on Bedrock), with synthetic patient data.
+This is an unedited RCS conversation on an Android phone (Google Messages). Every reply came from the deployed AgentCore runtime on Amazon Bedrock, with synthetic patient data.
 
 | First touch (no PHI) | Verify, then consent | Policy-issued options | Enrolled, with a secure link |
 |:---:|:---:|:---:|:---:|
@@ -92,11 +92,13 @@ uv venv -p 3.12 .venv && uv pip install -p .venv -e ".[dev]"
 .venv/bin/python -m sim.run_demo        # both demo conversations, offline planner
 ```
 
-To run the same conversations through the real Strands agent on Bedrock, use your own AWS credentials:
+To run the same conversations through the real Strands agent on Amazon Nova Pro (Bedrock Converse API), use an IAM role or a named profile. Do not export long-lived access keys. The model id defaults to `us.amazon.nova-pro-v1:0` in `us-east-1`. `SETTLE_MODEL_ID` overrides it; Anthropic ids (`anthropic.*`, including `us.anthropic.*`) are rejected.
 
 ```bash
-AWS_PROFILE=<profile> SETTLE_MODEL=bedrock .venv/bin/python -m sim.run_demo
+AWS_PROFILE=<profile> AWS_REGION=us-east-1 SETTLE_MODEL=bedrock .venv/bin/python -m sim.run_demo
 ```
+
+See `.env.example` for the variables. The process environment is what the app reads.
 
 To run them against the **deployed** AgentCore runtime (after `cdk deploy` + seeding):
 

@@ -4,9 +4,9 @@ Region: `us-east-1` (RCS, WhatsApp and AgentCore Runtime are all available there
 
 ## 0. Prerequisites
 
-* An AWS CLI profile for the target account (`aws configure --profile <name>`)
+* AWS credentials from an IAM role or OIDC, not long-lived access keys. Locally that is `AWS_PROFILE` (or a role already on the machine). In GitHub Actions, use `aws-actions/configure-aws-credentials` with `role-to-assume`. The AgentCore runtime calls Bedrock with its own IAM role; do not put `AWS_ACCESS_KEY_ID` in its environment.
 * Node 22 or 24, for the CDK CLI (`npx aws-cdk@2`)
-* Bedrock model access to Claude in the account, and the model ID set in `infra/cdk.json` → `modelId`
+* Amazon Nova enabled in the account. The default model is Nova Pro, `us.amazon.nova-pro-v1:0`, in `us-east-1` (`infra/cdk.json` → `modelId`, or `SETTLE_MODEL_ID`). The runtime role may invoke `foundation-model/amazon.nova-*` and `inference-profile/us.amazon.nova-*` only. Anthropic model ids are rejected: Claude on Bedrock is Marketplace-billed, so promo credits do not cover it.
 * One of each channel you want live:
   * **RCS**: an RCS agent in `ACTIVE` testing state with a verified test device ([AWS sample](https://github.com/aws-samples/sample-rcs-agent-setup-and-send-messages))
   * **SMS** (fallback + SMS channel): an origination number or pool

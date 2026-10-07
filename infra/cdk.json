@@ -7,6 +7,6 @@
     "fromEmail": "",
     "staffEmail": "",
     "emailOverrideTo": "",
-    "modelId": "us.anthropic.claude-opus-5-5"
+    "modelId": "us.amazon.nova-pro-v1:0"
   }
 }

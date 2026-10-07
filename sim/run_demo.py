@@ -1,7 +1,7 @@
 """Run the two demo conversations end-to-end through the real router + tools.
 
     python -m sim.run_demo                     # offline planner, no AWS needed
-    SETTLE_MODEL=bedrock python -m sim.run_demo  # real Strands agent on Bedrock
+    SETTLE_MODEL=bedrock python -m sim.run_demo  # real Strands agent on Nova Pro (Bedrock Converse)
 
 Writes sim/out/<engine>/<scenario>.json (transcript + tool trace + audit chain check),
 which media/build_video.py renders into the demo frames.

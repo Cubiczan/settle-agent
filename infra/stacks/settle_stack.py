@@ -1,13 +1,14 @@
 """Everything Settle needs, in one stack.
 
   EUM SMS/RCS ──SNS──► λ eum-sms ─┐
-  EUM Social (WhatsApp) ─SNS─► λ eum-social ─┼─► AgentCore Runtime (Strands agent) ──► Bedrock (Claude)
+  EUM Social (WhatsApp) ─SNS─► λ eum-social ─┼─► AgentCore Runtime (Strands agent) ──► Bedrock (Nova Pro)
   SES inbound ─S3─► λ ses-inbound ┘            │  DynamoDB: ledger · state · audit · tickets
                                                └─► SES (confirmations, staff alerts)
   EventBridge (daily) ─► λ outreach ─► RCS rich card (SMS fallback) / WhatsApp template / email
 
 Run scripts/package.sh first; this stack uploads build/runtime.zip and build/lambda/.
 """
+import sys
 from pathlib import Path
 
 from aws_cdk import (
@@ -29,6 +30,10 @@ from aws_cdk import (
 from constructs import Construct
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from settle.model import DEFAULT_MODEL_ID, bedrock_invoke_policy, resolve_model_id  # noqa: E402
 
 
 class SettleStack(Stack):
@@ -64,9 +69,13 @@ class SettleStack(Stack):
         # --- AgentCore Runtime ---------------------------------------------
         runtime_role = iam.Role(self, "RuntimeRole",
                                 assumed_by=iam.ServicePrincipal("bedrock-agentcore.amazonaws.com"))
+        # Nova foundation models and US Nova inference profiles only.
+        nova = bedrock_invoke_policy(self.region, self.account)
         runtime_role.add_to_policy(iam.PolicyStatement(
-            actions=["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream", "bedrock:ApplyGuardrail"],
-            resources=["*"]))
+            sid="InvokeNova", actions=nova["actions"], resources=nova["resources"]))
+        runtime_role.add_to_policy(iam.PolicyStatement(
+            sid="ApplyGuardrail", actions=["bedrock:ApplyGuardrail"],
+            resources=[f"arn:aws:bedrock:{self.region}:{self.account}:guardrail/*"]))
         runtime_role.add_to_policy(iam.PolicyStatement(actions=["ses:SendEmail"], resources=["*"]))
         runtime_role.add_to_policy(iam.PolicyStatement(
             actions=["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents",
@@ -88,7 +97,8 @@ class SettleStack(Stack):
                         bucket=bundle.s3_bucket_name, prefix=bundle.s3_object_key)),
                     entry_point=["main.py"], runtime="PYTHON_3_12")),
             network_configuration=agentcore.CfnRuntime.NetworkConfigurationProperty(network_mode="PUBLIC"),
-            environment_variables={**env, "SETTLE_MODEL_ID": ctx("modelId") or "us.anthropic.claude-opus-5-5",
+            environment_variables={**env, "SETTLE_MODEL_ID": resolve_model_id(
+                                       (ctx("modelId") or "").strip() or DEFAULT_MODEL_ID),
                                    "SETTLE_MODEL": "bedrock"})
         runtime.node.add_dependency(runtime_role)
 

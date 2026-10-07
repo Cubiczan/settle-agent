@@ -16,7 +16,7 @@ Settle is an agent that handles those conversations over **RCS, SMS, WhatsApp an
 It works in the patient's language. The demo shows English over RCS and Spanish over WhatsApp.
 
 ## How we built it
-- **Amazon Bedrock AgentCore Runtime** hosts a **Strands** agent (Claude on Amazon Bedrock) with 10 tools. There's one isolated runtime session per conversation.
+- **Amazon Bedrock AgentCore Runtime** hosts a **Strands** agent (Amazon Nova Pro on Amazon Bedrock, via the Converse API) with 10 tools. There's one isolated runtime session per conversation.
 - **AWS End User Messaging**: RCS via `SendRcsMessage`, with rich cards, suggestion chips and SMS `FallbackConfiguration`. SMS via `SendTextMessage`. Two-way traffic for both arrives on SNS.
 - **AWS End User Messaging Social**: WhatsApp, using templates for the first touch, reply buttons, and inbound webhook events via SNS.
 - **Amazon SES**: plan confirmations, staff alerts, and inbound email through a receipt rule to S3.

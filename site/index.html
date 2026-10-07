@@ -94,7 +94,7 @@ footer{padding:40px 0 60px;color:var(--mute);font-size:14px;border-top:1px solid
 
   <section id="live">
     <h2>Live on a real phone</h2>
-    <p class="sub">These are unedited screenshots from Google Messages on Android. The agent is Claude on Amazon Bedrock, running in AgentCore Runtime, and the messages go through AWS End User Messaging RCS.</p>
+    <p class="sub">These are unedited screenshots from Google Messages on Android. Replies came from the deployed AgentCore runtime, and the messages go through AWS End User Messaging RCS.</p>
     <div class="shots">
       <figure><img src="assets/rcs-1-rich-card.jpg" alt="RCS rich card with no health information"><figcaption>First touch, with no PHI</figcaption></figure>
       <figure><img src="assets/rcs-2-verify-consent.jpg" alt="Agent asks for date of birth, then consent"><figcaption>Verify, then consent</figcaption></figure>
@@ -134,7 +134,7 @@ footer{padding:40px 0 60px;color:var(--mute);font-size:14px;border-top:1px solid
     <p class="sub">Messages come in on each channel and go to one agent in AgentCore, and replies go out on the same channel. It's one AWS CDK stack.</p>
     <img class="arch" src="assets/architecture.png" alt="Architecture: RCS/SMS via AWS End User Messaging, WhatsApp via End User Messaging Social and email via SES feed channel Lambdas, which invoke a Strands agent on Amazon Bedrock AgentCore Runtime backed by DynamoDB and SES">
     <div class="aws" style="margin-top:22px">
-      <span>Amazon Bedrock AgentCore Runtime</span><span>Amazon Bedrock · Claude</span><span>Strands Agents</span>
+      <span>Amazon Bedrock AgentCore Runtime</span><span>Amazon Bedrock · Nova Pro</span><span>Strands Agents</span>
       <span>AWS End User Messaging · RCS &amp; SMS</span><span>End User Messaging Social · WhatsApp</span><span>Amazon SES</span>
       <span>Amazon SNS</span><span>AWS Lambda</span><span>Amazon DynamoDB</span><span>Amazon EventBridge</span><span>AWS CDK</span>
     </div>
